@@ -5,7 +5,7 @@
 #include "SherpaEngine.h"
 #include "sherpa-onnx/c-api/c-api.h"
 
-void sherpa_engine(RingBuffer &ring, std::string source_name)
+void sherpa_engine(RingBuffer &ring, std::string source_name, STTServer &server)
 {
     SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 
@@ -67,6 +67,7 @@ void sherpa_engine(RingBuffer &ring, std::string source_name)
             {
                 std::cout << "\r[" << source_name << "] " << current_text << "          " << std::flush;
                 last_text = current_text;
+                server.broadcast(source_name, current_text);
             }
         }
         SherpaOnnxDestroyOnlineRecognizerResult(result);

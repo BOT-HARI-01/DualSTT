@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DualSTT</title>
+    <style>
+        body { font-family: sans-serif; background: #1e1e1e; color: #fff; padding: 40px; }
+        .container { display: flex; gap: 20px; }
+        .box { flex: 1; background: #2d2d2d; padding: 20px; border-radius: 8px; height: 400px; overflow-y: auto; }
+        h2 { margin-top: 0; border-bottom: 2px solid #555; padding-bottom: 10px; }
+        .mic-text { color: #4ade80; margin: 5px 0;}
+        .sys-text { color: #60a5fa; margin: 5px 0;}
+        #status { margin-bottom: 20px; color: #fbbf24; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>DualSTT Real-Time Monitor</h1>
+    <div id="status">Connecting to Daemon...</div>
+
+    <div class="container">
+        <div class="box">
+            <h2>🎙️ Microphone</h2>
+            <div id="mic-logs"></div>
+        </div>
+        <div class="box">
+            <h2>🔊 System Audio</h2>
+            <div id="sys-logs"></div>
+        </div>
+    </div>
+
+    <script>
+        // Connect to your C++ Daemon!
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            document.getElementById('status').innerText = "🟢 Connected to DualSTT Daemon";
+            document.getElementById('status').style.color = "#4ade80";
+        };
+
+        ws.onclose = () => {
+            document.getElementById('status').innerText = "🔴 Disconnected. Is the .exe running?";
+            document.getElementById('status').style.color = "#f87171";
+        };
+
+        // This runs every time your C++ code calls server.broadcast()
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            const p = document.createElement('p');
+            p.innerText = ">> " + data.text;
+
+            if (data.source === "Mic") {
+                p.className = "mic-text";
+                const logs = document.getElementById('mic-logs');
+                logs.appendChild(p);
+                logs.scrollTop = logs.scrollHeight;
+            } 
+            else if (data.source === "System") {
+                p.className = "sys-text";
+                const logs = document.getElementById('sys-logs');
+                logs.appendChild(p);
+                logs.scrollTop = logs.scrollHeight;
+            }
+        };
+    </script>
+</body>
+</html>
