@@ -5,7 +5,7 @@
 #include "SherpaEngine.h"
 #include "sherpa-onnx/c-api/c-api.h"
 
-void sherpa_engine(RingBuffer &ring)
+void sherpa_engine(RingBuffer &ring, std::string source_name)
 {
     SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 
@@ -38,7 +38,7 @@ void sherpa_engine(RingBuffer &ring)
     std::vector<float> stt_buffer(CHUNK_SIZE);
     std::string last_text = "";
 
-    std::cout << "[AI Worker] Streaming Engine Ready. Start speaking...\n"<< std::endl;
+    std::cout << "[AI Worker] " << source_name << " Engine Ready." << std::endl;
 
     while (true)
     {
@@ -65,7 +65,7 @@ void sherpa_engine(RingBuffer &ring)
             std::string current_text = result->text;
             if (current_text.length() > 0 && current_text != last_text)
             {
-                std::cout << "\r--> " << current_text << "          " << std::flush;
+                std::cout << "\r[" << source_name << "] " << current_text << "          " << std::flush;
                 last_text = current_text;
             }
         }
