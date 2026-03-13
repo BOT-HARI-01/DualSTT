@@ -7,7 +7,10 @@ A low latency background daemon that captures audio and transcribes it in real-t
 - [x] Thread-safe RingBuffer memory management
 - [x] Sherpa-ONNX INT8 streaming inference (Low-latency)
 - [x] Hardware Audio Backend: Windows (WASAPI) Microphone Capture
-- [ ] Hardware Audio Backend: Windows (WASAPI) System Loopback
+- [x] Hardware Audio Backend: Windows (WASAPI) System Loopback
+- [x] Windows WebSocket JSON Broadcasting
+- [ ] Hardware Audio Backend: Cross-platform Microphone Capture (Pending)
+- [ ] Hardware Audio Backend: Cross-platform System Loopback (Pending)
 - [ ] Cross-platform WebSocket JSON Broadcasting (Pending)
 
 ## Prerequisites
