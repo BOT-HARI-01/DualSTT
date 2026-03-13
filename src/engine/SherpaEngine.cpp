@@ -1,22 +1,22 @@
+#include "string"
 #include "vector"
-#include "Windows.h"
 #include "iostream"
-#include "vector"
+#include "Windows.h"
 #include "SherpaEngine.h"
 #include "sherpa-onnx/c-api/c-api.h"
 
-void sherpa_engine(RingBuffer &ring, std::string source_name, STTServer &server)
+void sherpa_engine(RingBuffer &ring, std::string source_name, STTServer &server, ModelPaths paths)
 {
     SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 
     SherpaOnnxOnlineRecognizerConfig config = {};
 
-    config.model_config.transducer.encoder = "models/sherpa/encoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx";
-    config.model_config.transducer.decoder = "models/sherpa/decoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx";
-    config.model_config.transducer.joiner = "models/sherpa/joiner-epoch-99-avg-1-chunk-16-left-128.int8.onnx";
-    config.model_config.tokens = "models/sherpa/tokens.txt";
+    config.model_config.transducer.encoder = paths.encoder.c_str();
+    config.model_config.transducer.decoder = paths.decoder.c_str();
+    config.model_config.transducer.joiner = paths.joiner.c_str();
+    config.model_config.tokens = paths.tokens.c_str();  
 
-    config.model_config.num_threads = 2;
+    config.model_config.num_threads = paths.num_threads;
     config.model_config.provider = "cpu";
 
     config.feat_config.sample_rate = 16000;

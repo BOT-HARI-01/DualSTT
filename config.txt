@@ -1,0 +1,5 @@
+encoder=models/sherpa/encoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx
+decoder=models/sherpa/decoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx
+joiner=models/sherpa/joiner-epoch-99-avg-1-chunk-16-left-128.int8.onnx
+tokens=models/sherpa/tokens.txt
+num_threads=2
